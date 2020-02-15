@@ -32,7 +32,10 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		// TODO: Logic to determine if the user associated with the current session
 		//  is able to create an employee
 
-		return new ModelAndView(ViewModelNames.EMPLOYEE_TYPES.getValue());
+		return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
+			.addObject(
+				ViewModelNames.EMPLOYEE.getValue(),
+				(new Employee()));
 	}
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
@@ -53,7 +56,7 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 
 		// TODO: Query the employee details using the request route parameter
 		// TODO: Serve up the page
-		return new ModelAndView(ViewModelNames.EMPLOYEE_TYPES.getValue());
+		return new ModelAndView(ViewModelNames.EMPLOYEE.getValue());
 	}
 
 	// Helper methods

@@ -42,6 +42,30 @@
 							<input id="employeeEmployeeId" type="text" th:value="${!employee.isEmpty} ? ${employee.employeeId} : ''" class="update" disabled />
 						</td>
 					</tr>
+					<tr>
+						<td>First name:</td>
+						<td>
+							<input id="firstName" type="text" th:value="${!employee.isEmpty} ? ${employee.firstName} : ''" />
+						</td>
+					</tr>
+					<tr>
+						<td>Last name:</td>
+						<td>
+							<input id="lastName" type="text" th:value="${!employee.isEmpty} ? ${employee.lastName} : ''" />
+						</td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td>
+							<input id="password" type="text" th:value="${!employee.isEmpty} ? ${employee.password} : ''" />
+						</td>
+					</tr>
+					<tr>
+						<td>Confirm password:</td>
+						<td>
+							<input id="password" type="text" th:value="${!employee.isEmpty} ? ${employee.password} : ''" />
+						</td>
+					</tr>
 					<!-- TODO: Other employee inputs -->
 				</tbody>
 			</table>
