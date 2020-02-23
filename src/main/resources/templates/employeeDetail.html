@@ -63,17 +63,17 @@
 					<tr>
 						<td>Confirm password:</td>
 						<td>
-							<input id="password" type="text" th:value="${!employee.isEmpty} ? ${employee.password} : ''" />
+							<input id="confirmPassword" type="text" th:value="${!employee.isEmpty} ? ${employee.password} : ''" />
 						</td>
 					</tr>
 					<tr>
 						<td>Employee Type:</td>
 						<td>
 							<select id="classification">
-								<option value="${EmployeeClassification.NOT_DEFINED}$">Not selected</option>
-								<option value="${EmployeeClassification.CASHIER}$">Cashier</option>
-								<option value="${EmployeeClassification.SHIFT_MANAGER}$">Shift Manager</option>
-								<option value="${EmployeeClassification.GENERAL_MANAGER}$">General Manager</option>
+								<option value="-1">Not selected</option>
+								<option value="101">Cashier</option>
+								<option value="501">Shift Manager</option>
+								<option value="701">General Manager</option>
 							</select>
 						</td>
 					</tr>
