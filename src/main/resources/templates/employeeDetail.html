@@ -30,7 +30,7 @@
 							<input id="employeeId" type="hidden" th:value="${!employee.isEmpty} ? ${employee.id} : ''" />
 						</td>
 					</tr>
-					<tr th:class="${employee.isEmpty} ? hidden : ''">
+					<tr id="employeeEmployeeIdTableRow" th:class="${employee.isEmpty} ? hidden : ''">
 						<td class="label">Employee ID:</td>
 						<td>
 							<input id="employeeEmployeeId" type="text" th:value="${!employee.isEmpty} ? ${employee.employeeId} : ''" class="update" disabled />

@@ -48,7 +48,8 @@ function saveActionClick(event) {
 					&& (callbackResponse.data.id != null)
 					&& (callbackResponse.data.id.trim() !== "")) {
 						setEmployeeId(callbackResponse.data.id.trim());
-						document.getElementById("employeeEmployeeId").classList.remove("hidden");
+						setEmployeeEmployeeId(callbackResponse.data.employeeId.trim());
+						document.getElementById("employeeEmployeeIdTableRow").classList.remove("hidden");
 					}
 			}
 		});
@@ -137,7 +138,10 @@ function getEmployeeId() {
 	return getEmployeeIdElement().value;
 }
 function setEmployeeId(employeeId) {
-	getProductIdElement().value = employeeId;
+	getEmployeeIdElement().value = employeeId;
+}
+function setEmployeeEmployeeId(employeeId) {
+	getEmployeeEmployeeIdElement().value = employeeId;
 }
 function getEmployeeEmployeeIdElement() {
 	return document.getElementById("employeeEmployeeId");
