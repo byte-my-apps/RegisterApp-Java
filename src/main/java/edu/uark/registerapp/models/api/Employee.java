@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import edu.uark.registerapp.commands.employees.helpers.EmployeeHelper;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
+import edu.uark.registerapp.models.enums.EmployeeClassification;
 
 public class Employee extends ApiResponse {
     private UUID id;

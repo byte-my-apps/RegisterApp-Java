@@ -158,7 +158,7 @@ function getEmployeeFirstName() {
 	return getEmployeeFirstNameElement().value;
 }
 function getEmployeeLastNameElement() {
-	return document.getElementById("firstName");
+	return document.getElementById("lastName");
 }
 function getEmployeeLastName() {
 	return getEmployeeLastNameElement().value;
