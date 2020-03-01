@@ -30,36 +30,19 @@ public class EmployeeRestController extends BaseRestController {
 		final HttpServletRequest request,
 		final HttpServletResponse response
 	) {
-		
-  /*
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public @ResponseBody ApiResponse createEmployee(
-		@RequestBody final Employee employee) {
-	*/
-		
-		return this.employeeCreateCommand
-			.setApiEmployee(employee)
-			.execute();
-
-
-		//boolean isInitialEmployee = false;
-		//ApiResponse canCreateEmployeeResponse;
-		/*
+		boolean isInitialEmployee = false;
+		ApiResponse canCreateEmployeeResponse;
 		try {
 			// TODO: Query if any active employees exist
-
 			canCreateEmployeeResponse =
 				this.redirectUserNotElevated(request, response);
 		} catch (final NotFoundException e) {
 			isInitialEmployee = true;
 			canCreateEmployeeResponse = new ApiResponse();
 		}
-
 		if (!canCreateEmployeeResponse.getRedirectUrl().equals(StringUtils.EMPTY)) {
 			return canCreateEmployeeResponse;
 		}
-		*/
-
 		// TODO: Create an employee;
 		//final Employee createdEmployee = new Employee();
 		/*
@@ -73,22 +56,31 @@ public class EmployeeRestController extends BaseRestController {
 		}
 		*/
 		//return createdEmployee.setIsInitialEmployee(isInitialEmployee);
+
+		return this.employeeCreateCommand
+			.setApiEmployee(employee)
+			.execute();
+
+
+		
+
+		
+
+		
 	}
 
-	@RequestMapping(value = "/{employeeId}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/api/employee/{employeeId}", method = RequestMethod.PATCH)
 	public @ResponseBody ApiResponse updateEmployee(
 		@PathVariable final UUID employeeId,
 		@RequestBody final Employee employee,
 		final HttpServletRequest request,
 		final HttpServletResponse response
 	) {
-		/*
 		final ApiResponse elevatedUserResponse =
 			this.redirectUserNotElevated(request, response);
 		if (!elevatedUserResponse.getRedirectUrl().equals(StringUtils.EMPTY)) {
 			return elevatedUserResponse;
 		}
-		*/
 
 		// TODO: Update the employee
 		return employee;
