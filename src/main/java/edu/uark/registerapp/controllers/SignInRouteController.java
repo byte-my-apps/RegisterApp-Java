@@ -15,7 +15,7 @@ import edu.uark.registerapp.controllers.enums.ViewNames;
 public class SignInRouteController extends BaseRouteController {
 	// TODO: Route for initial page load
 
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView performSignIn(
 		// TODO: Define an object that will represent the sign in request and add it as a parameter here
 		HttpServletRequest request
