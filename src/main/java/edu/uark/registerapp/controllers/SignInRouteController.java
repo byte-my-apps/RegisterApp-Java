@@ -45,7 +45,6 @@ public class SignInRouteController extends BaseRouteController {
 	public ModelAndView performSignIn(
 		@RequestParam final Map<String, String> queryParameters,
 		EmployeeSignIn employeeSignIn,
-		// TODO: Define an object that will represent the sign in request and add it as a parameter here
 		HttpServletRequest request
 	) {
 		final ModelAndView modelAndView;
@@ -64,26 +63,14 @@ public class SignInRouteController extends BaseRouteController {
 		//  to sign in the user
 
 	}
-
-	/*@RequestMapping(value = "/signIn", method = RequestMethod.GET)
-	public ModelAndView startSignIn(
-		@RequestParam final Map<String, String> queryParameters,
-		HttpServletRequest request
-	){
-			} */
-
-
-
+	
 	private boolean employeeIdExists(String employeeId) {
-		System.out.println(employeeRepository.existsByEmployeeId(Integer.valueOf(employeeId)));
 		return employeeRepository.existsByEmployeeId(Integer.valueOf(employeeId));
 		
 	}
 	private boolean passwordIsCorrect(String employeeId, String password) {
 		EmployeeEntity employeeEntity = 
 			employeeRepository.findByEmployeeId(Integer.valueOf(employeeId)).get();
-		System.out.println(employeeEntity.getEmployeeId());
-		System.out.println(employeeEntity.getPassword().toString());
 		System.out.println("input: " + password);
 		if (Arrays.equals(employeeEntity.getPassword(), new byte[0])) {
 			return true;
