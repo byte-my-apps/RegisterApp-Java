@@ -32,6 +32,7 @@ public class EmployeeRestController extends BaseRestController {
 	) {
 		boolean isInitialEmployee = true;
 		ApiResponse canCreateEmployeeResponse;
+		/*
 		try {
 			// TODO: Query if any active employees exist
 			canCreateEmployeeResponse =
@@ -45,7 +46,6 @@ public class EmployeeRestController extends BaseRestController {
 		}
 		// TODO: Create an employee;
 		//final Employee createdEmployee = new Employee();
-		/*
 		if (isInitialEmployee) {
 			createdEmployee
 				.setRedirectUrl(
@@ -58,7 +58,7 @@ public class EmployeeRestController extends BaseRestController {
 		//return createdEmployee.setIsInitialEmployee(isInitialEmployee);
 
 		return this.employeeCreateCommand
-			.setApiEmployee(employee)
+			 .setApiEmployee(employee)
 			.execute();
 
 

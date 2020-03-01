@@ -11,7 +11,7 @@ import edu.uark.registerapp.commands.employees.helpers.EmployeeHelper;
 
 public class EmployeeSignIn extends ApiResponse {
   private String employeeId;
-  public String getEmployeeID() {
+  public String getEmployeeId() {
     return this.employeeId;
   }
   public EmployeeSignIn setEmployeeId(final String employeeId) {
