@@ -1,0 +1,82 @@
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>Register - Main Menu</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" type="text/css" href="/styles/master.css">
+
+	<script type="text/javascript" src="/scripts/master.js" defer></script>
+	<script type="text/javascript" src="/scripts/mainMenu.js" defer></script>
+</head>
+
+<body>
+
+	<div class="header">
+		<h1 class="primary-message">Main Menu</h1>
+	</div>
+		
+	<div id="main" class="main">
+		<div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
+			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
+		</div>
+
+		<!-- TODO: Add the various action button elements -->
+		<!-- Start Transaction button -->
+		<button onclick="eMessage()">Start Transaction</button>
+		<br />
+		<br />
+		<!-- View Products button -->
+		<button onclick="productNav()">View Products</button>
+		<br />
+		<br />
+		<!-- Create Employee button, only visible to managers -->
+		<button onclick="employeeNav()">Create Employee</button>
+		<br />
+		<br />
+		<!-- Sales Report button, only visible to managers -->
+		<button onclick="eMessage()">Sales Report</button>
+		<br />
+		<br />
+		<!-- Cashier Report button, only visible to managers -->
+		<button onclick="eMessage()">Cashier Report</button>
+		<br />
+		<br />
+		<script>
+			function eMessage() {
+				alert("Functionality has not yet been implemented");
+			}
+			function productNav() {
+				// wrong path but just using it to test
+				location.assign("/productDetail");
+			}
+			function employeeNav() {
+				// wrong path but just using it to test
+				location.assign("https://www.w3schools.com");
+			}
+		</script>
+	</div>
+
+	<div class="hidden">
+		<input type="checkbox" id="isRefreshed" class="hidden">
+		<script type="text/javascript">
+			window.onunload = function() {
+				const isRefreshedElement = document.getElementById("isRefreshed");
+
+				if(!isRefreshedElement.checked) {
+					isRefreshedElement.checked = true;
+				} else {
+					isRefreshedElement.checked = false;
+					location.reload();
+				}
+			}
+		</script>
+	</div>
+
+	<div class="footer">
+		<img id="signOutImage" src="/images/Sign-Out.png" alt="Sign Out" class="footer" />
+	</div>
+		
+</body>
+
+</html>
