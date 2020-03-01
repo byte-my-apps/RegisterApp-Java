@@ -30,7 +30,7 @@ function saveActionClick(event) {
 	};
 
 	if (employeeIdIsDefined) {
-		ajaxPut(saveActionUrl, saveEmployeeRequest, (callbackResponse) => {
+		ajaxPatch(saveActionUrl, saveEmployeeRequest, (callbackResponse) => {
 			saveActionElement.disabled = false;
 
 			if (isSuccessResponse(callbackResponse)) {
