@@ -117,7 +117,7 @@ public class Employee extends ApiResponse {
 		this.isActive = true;
 		this.id = new UUID(0, 0);
 		this.classification = -1;
-		this.isInitialEmployee = false;
+		this.isInitialEmployee = true;
 		this.managerId = new UUID(0, 0);
 		this.lastName = StringUtils.EMPTY;
 		this.password = StringUtils.EMPTY;
