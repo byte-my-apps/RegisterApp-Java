@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
@@ -49,13 +50,16 @@ public class SignInRouteController extends BaseRouteController {
 	) {
 		final ModelAndView modelAndView;
 		if (!employeeIdExists(employeeSignIn.getEmployeeId()) ||
-		!passwordIsCorrect(employeeSignIn.getEmployeeId(), employeeSignIn.getPassword())) {
+			!passwordIsCorrect(employeeSignIn.getEmployeeId(),
+		 	employeeSignIn.getPassword())) {
 			modelAndView = new ModelAndView(ViewNames.SIGN_IN.getViewName());
 			modelAndView.addObject(
 				ViewModelNames.ERROR_MESSAGE.getValue(), 
 				"Invalid username / password combination.");
 			return modelAndView;
 		}
+		this.employeeSignInCommand.setEmployeeSignIn(employeeSignIn).
+			setRequest(request).execute();
 		return new ModelAndView(REDIRECT_PREPEND.concat(
 			ViewNames.MAIN_MENU.getRoute()));
 		// TODO: Use the credentials provided in the request body
@@ -80,6 +84,6 @@ public class SignInRouteController extends BaseRouteController {
 	}
 	@Autowired
 	private EmployeeRepository employeeRepository;
-
-	
+	@Autowired
+	private EmployeeSignInCommand employeeSignInCommand;
 }
