@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.uark.registerapp.commands.exceptions.NotFoundException;
 import edu.uark.registerapp.commands.employees.EmployeeCreateCommand;
+import edu.uark.registerapp.commands.exceptions.NotFoundException;
 import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.ApiResponse;
 import edu.uark.registerapp.models.api.Employee;
+import edu.uark.registerapp.models.repositories.EmployeeRepository;
 
 @RestController
 @RequestMapping(value = "/api/employee")
@@ -30,12 +31,13 @@ public class EmployeeRestController extends BaseRestController {
 		final HttpServletRequest request,
 		final HttpServletResponse response
 	) {
-		boolean isInitialEmployee = true;
+		boolean isInitialEmployee = !activeUserExists();
+		
 		ApiResponse canCreateEmployeeResponse;
+		// TODO: Query if any active employees exist
 		/*
 		try {
-			// TODO: Query if any active employees exist
-			canCreateEmployeeResponse =
+						canCreateEmployeeResponse =
 				this.redirectUserNotElevated(request, response);
 		} catch (final NotFoundException e) {
 			isInitialEmployee = true;
@@ -45,7 +47,7 @@ public class EmployeeRestController extends BaseRestController {
 			return canCreateEmployeeResponse;
 		}
 		// TODO: Create an employee;
-		//final Employee createdEmployee = new Employee();
+		final Employee createdEmployee = new Employee();
 		if (isInitialEmployee) {
 			createdEmployee
 				.setRedirectUrl(
@@ -54,19 +56,11 @@ public class EmployeeRestController extends BaseRestController {
 							QueryParameterNames.EMPLOYEE_ID.getValue(),
 							createdEmployee.getEmployeeId())));
 		}
-		*/
 		//return createdEmployee.setIsInitialEmployee(isInitialEmployee);
-
+		*/
 		return this.employeeCreateCommand
 			 .setApiEmployee(employee)
 			.execute();
-
-
-		
-
-		
-
-		
 	}
 
 	@RequestMapping(value = "/api/employee/{employeeId}", method = RequestMethod.PATCH)
@@ -85,6 +79,17 @@ public class EmployeeRestController extends BaseRestController {
 		// TODO: Update the employee
 		return employee;
 	}
+
+	// Helper methods
+	private boolean activeUserExists() {
+		if (employeeRepository.existsByIsActive(true)) {
+      return true;
+    } else {
+      return false;
+    } 
+	}
+	@Autowired
+	EmployeeRepository employeeRepository;		
 	@Autowired
 	private EmployeeCreateCommand employeeCreateCommand;
 }

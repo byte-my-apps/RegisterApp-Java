@@ -20,6 +20,7 @@ public class SignInRestController extends BaseRestController {
 		final HttpServletRequest request
 	) {
 		this.activeUserDeleteCommand.setRequest(request).execute();
+		System.out.println("signing out");
 		// TODO: Sign out the user associated with request.getSession().getId()
 
 		return (new ApiResponse())

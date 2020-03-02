@@ -1,6 +1,7 @@
 package edu.uark.registerapp.controllers;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
+import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 
 
@@ -31,9 +33,14 @@ public class SignInRouteController extends BaseRouteController {
 		@RequestParam final Map<String, String> queryParameters,
 		HttpServletRequest request
 	) {
-
-		if (employeeRepository.count() > 0) {
-				return new ModelAndView(ViewNames.SIGN_IN.getViewName());
+		final Optional<ActiveUserEntity> activeUserEntity =
+			this.getCurrentUser(request);
+		if (activeUserEntity.isPresent()) {
+			return new ModelAndView(
+				REDIRECT_PREPEND.concat(
+					ViewNames.MAIN_MENU.getRoute()));
+		} else if (employeeRepository.count() > 0) {
+			return new ModelAndView(ViewNames.SIGN_IN.getViewName());
 		} else {
 			return new ModelAndView(
 				REDIRECT_PREPEND.concat(

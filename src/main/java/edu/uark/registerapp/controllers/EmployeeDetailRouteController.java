@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.uark.registerapp.commands.exceptions.NotFoundException;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
+import edu.uark.registerapp.models.enums.EmployeeClassification;
+import edu.uark.registerapp.models.repositories.ActiveUserRepository;
+import edu.uark.registerapp.models.repositories.EmployeeRepository;
 
 @Controller
 @RequestMapping(value = "/employeeDetail")
@@ -31,12 +33,34 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 
 		// TODO: Logic to determine if the user associated with the current session
 		//  is able to create an employee
-
-		return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
-			.addObject(
-				ViewModelNames.EMPLOYEE.getValue(),
-				(new Employee()));
-	}
+		final Optional<ActiveUserEntity> activeUserEntity =
+			this.getCurrentUser(request);
+		if (!activeUserExists()) {
+			return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
+				.addObject(
+					ViewModelNames.EMPLOYEE.getValue(),
+					(new Employee()));
+		} else if (!activeUserEntity.isPresent()) {
+			//redirect to signin
+			ModelAndView modelAndView;
+			modelAndView = new ModelAndView(ViewNames.SIGN_IN.getViewName());
+			modelAndView.addObject(
+				ViewModelNames.ERROR_MESSAGE.getValue(), 
+				"Must be logged in to create employees.");
+			return modelAndView;
+		} else if (!EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())) {
+			ModelAndView modelAndView;
+			modelAndView = new ModelAndView(ViewNames.MAIN_MENU.getViewName());
+			modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), 
+				"User must be General Manager or Shift Manager to Create Employee.");
+			return modelAndView;
+		} else {
+			return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
+				.addObject(
+					ViewModelNames.EMPLOYEE.getValue(),
+					(new Employee()));
+		}
+	}	
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
 	public ModelAndView startWithEmployee(
@@ -61,7 +85,14 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 
 	// Helper methods
 	private boolean activeUserExists() {
-		// TODO: Helper method to determine if any active users Exist
-		return true;
+		if (employeeRepository.existsByIsActive(true)) {
+      return true;
+    } else {
+      return false;
+    } 
 	}
+	@Autowired
+	EmployeeRepository employeeRepository;
+	@Autowired
+	ActiveUserRepository activeUserRepository;
 }
