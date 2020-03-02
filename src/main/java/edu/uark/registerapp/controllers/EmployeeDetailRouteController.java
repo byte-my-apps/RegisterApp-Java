@@ -30,18 +30,14 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		@RequestParam final Map<String, String> queryParameters,
 		final HttpServletRequest request
 	) {
-
-		// TODO: Logic to determine if the user associated with the current session
-		//  is able to create an employee
 		final Optional<ActiveUserEntity> activeUserEntity =
 			this.getCurrentUser(request);
 		if (!activeUserExists()) {
 			return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
 				.addObject(
 					ViewModelNames.EMPLOYEE.getValue(),
-					(new Employee()));
+					(new Employee()).setIsInitialEmployee(true));
 		} else if (!activeUserEntity.isPresent()) {
-			//redirect to signin
 			ModelAndView modelAndView;
 			modelAndView = new ModelAndView(ViewNames.SIGN_IN.getViewName());
 			modelAndView.addObject(
@@ -58,7 +54,7 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 			return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
 				.addObject(
 					ViewModelNames.EMPLOYEE.getValue(),
-					(new Employee()));
+					(new Employee()).setIsInitialEmployee(false));
 		}
 	}	
 
@@ -68,10 +64,8 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		@RequestParam final Map<String, String> queryParameters,
 		final HttpServletRequest request
 	) {
-
 		final Optional<ActiveUserEntity> activeUserEntity =
 			this.getCurrentUser(request);
-
 		if (!activeUserEntity.isPresent()) {
 			return this.buildInvalidSessionResponse();
 		} else if (!this.isElevatedUser(activeUserEntity.get())) {

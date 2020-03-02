@@ -32,7 +32,7 @@ public class EmployeeRestController extends BaseRestController {
 		final HttpServletResponse response
 	) {
 		boolean isInitialEmployee = !activeUserExists();
-		
+		employee.setIsInitialEmployee(isInitialEmployee);
 		ApiResponse canCreateEmployeeResponse;
 		// TODO: Query if any active employees exist
 		/*

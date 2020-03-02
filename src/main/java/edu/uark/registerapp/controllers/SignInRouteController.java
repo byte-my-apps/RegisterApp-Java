@@ -56,6 +56,7 @@ public class SignInRouteController extends BaseRouteController {
 		HttpServletRequest request
 	) {
 		final ModelAndView modelAndView;
+
 		if (!employeeIdExists(employeeSignIn.getEmployeeId()) ||
 			!passwordIsCorrect(employeeSignIn.getEmployeeId(),
 		 	employeeSignIn.getPassword())) {
