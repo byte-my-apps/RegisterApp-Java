@@ -35,6 +35,9 @@ public class SignInRouteController extends BaseRouteController {
 	) {
 		final Optional<ActiveUserEntity> activeUserEntity =
 			this.getCurrentUser(request);
+		if (queryParameters.get("employeeId") != null) {
+			
+		}
 		if (activeUserEntity.isPresent()) {
 			return new ModelAndView(
 				REDIRECT_PREPEND.concat(
