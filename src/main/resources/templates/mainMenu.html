@@ -31,15 +31,21 @@
 		<br />
 		<br />
 		<!-- Create Employee button, only visible to managers -->
-		<button onclick="employeeNav()">Create Employee</button>
+		<div id="createButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
+			<button onclick="employeeNav()">Create Employee</button>
+		</div>
 		<br />
 		<br />
 		<!-- Sales Report button, only visible to managers -->
-		<button onclick="eMessage()">Sales Report</button>
+		<div id="salesButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
+			<button onclick="eMessage()">Sales Report</button>
+		</div>
 		<br />
 		<br />
 		<!-- Cashier Report button, only visible to managers -->
-		<button onclick="eMessage()">Cashier Report</button>
+		<div id="cashierButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
+			<button onclick="eMessage()">Cashier Report</button>
+		</div>
 		<br />
 		<br />
 		<script>

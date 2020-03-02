@@ -24,11 +24,11 @@ public class MainMenuRouteController extends BaseRouteController {
 		final HttpServletRequest request
 	) {
 
-		/*final Optional<ActiveUserEntity> activeUserEntity =
+		final Optional<ActiveUserEntity> activeUserEntity =
 			this.getCurrentUser(request);
 		if (!activeUserEntity.isPresent()) {
 			return this.buildInvalidSessionResponse();
-		}*/
+		}
 		
 		ModelAndView modelAndView =
 			this.setErrorMessageFromQueryString(
@@ -36,10 +36,13 @@ public class MainMenuRouteController extends BaseRouteController {
 				queryParameters);
 
 		// TODO: Examine the ActiveUser classification if you want this information
+		boolean isElevatedUser = (activeUserEntity.get().getClassification() == 701 || activeUserEntity.get().getClassification() == 501);
+		System.out.println(isElevatedUser);
+
 		modelAndView.addObject(
 			ViewModelNames.IS_ELEVATED_USER.getValue(),
-			true);
-		
+			isElevatedUser);
+
 		return modelAndView;
 	}
 }
