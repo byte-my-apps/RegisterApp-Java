@@ -30,9 +30,8 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		@RequestParam final Map<String, String> queryParameters,
 		final HttpServletRequest request
 	) {
-		final Optional<ActiveUserEntity> activeUserEntity =
-			this.getCurrentUser(request);
-		if (!activeUserExists()) {
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+		if (noEmployees()) {
 			return (new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()))
 				.addObject(
 					ViewModelNames.EMPLOYEE.getValue(),
@@ -85,6 +84,14 @@ public class EmployeeDetailRouteController extends BaseRouteController {
       return false;
     } 
 	}
+	private boolean noEmployees() {
+		if (employeeRepository.count() > 0) {
+      return false;
+    } else {
+      return true;
+    } 
+	}
+
 	@Autowired
 	EmployeeRepository employeeRepository;
 	@Autowired

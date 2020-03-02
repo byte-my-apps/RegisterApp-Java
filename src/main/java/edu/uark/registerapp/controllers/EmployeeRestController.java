@@ -1,9 +1,14 @@
 package edu.uark.registerapp.controllers;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.View;
+
+import com.fasterxml.jackson.core.io.IOContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +36,7 @@ public class EmployeeRestController extends BaseRestController {
 		final HttpServletRequest request,
 		final HttpServletResponse response
 	) {
-		boolean isInitialEmployee = !activeUserExists();
+		boolean isInitialEmployee = noEmployees();
 		employee.setIsInitialEmployee(isInitialEmployee);
 		ApiResponse canCreateEmployeeResponse;
 		// TODO: Query if any active employees exist
@@ -58,9 +63,20 @@ public class EmployeeRestController extends BaseRestController {
 		}
 		//return createdEmployee.setIsInitialEmployee(isInitialEmployee);
 		*/
-		return this.employeeCreateCommand
+		this.employeeCreateCommand
 			 .setApiEmployee(employee)
 			.execute();
+		if (isInitialEmployee) {
+			employee	
+				.setRedirectUrl(
+					ViewNames.SIGN_IN.getRoute().concat(
+						this.buildInitialQueryParameter(
+							QueryParameterNames.EMPLOYEE_ID.getValue(),
+							employee.getEmployeeId())));
+			response.setStatus(302);
+		}
+		return employee;
+
 	}
 
 	@RequestMapping(value = "/api/employee/{employeeId}", method = RequestMethod.PATCH)
@@ -81,11 +97,11 @@ public class EmployeeRestController extends BaseRestController {
 	}
 
 	// Helper methods
-	private boolean activeUserExists() {
-		if (employeeRepository.existsByIsActive(true)) {
-      return true;
-    } else {
+	private boolean noEmployees() {
+		if (employeeRepository.count() > 0) {
       return false;
+    } else {
+      return true;
     } 
 	}
 	@Autowired

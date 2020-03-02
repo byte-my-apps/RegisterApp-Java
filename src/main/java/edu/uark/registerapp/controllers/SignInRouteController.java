@@ -40,6 +40,7 @@ public class SignInRouteController extends BaseRouteController {
 				REDIRECT_PREPEND.concat(
 					ViewNames.MAIN_MENU.getRoute()));
 		} else if (employeeRepository.count() > 0) {
+			System.out.println(employeeRepository.count());
 			return new ModelAndView(ViewNames.SIGN_IN.getViewName());
 		} else {
 			return new ModelAndView(
