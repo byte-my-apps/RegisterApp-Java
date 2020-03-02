@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="productsWrapper">
-			<div>
+			<div id="createButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
 				<a href="/productDetail/" class="button">Create New</a>
 			</div>
 
