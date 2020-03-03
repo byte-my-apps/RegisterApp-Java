@@ -2,6 +2,9 @@ package edu.uark.registerapp.controllers;
 
 import java.util.Map;
 import java.util.Optional;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
+import edu.uark.registerapp.commands.employees.helpers.EmployeeHelper;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
@@ -22,73 +26,58 @@ import edu.uark.registerapp.models.repositories.EmployeeRepository;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 
-
 @Controller
 @RequestMapping(value = "/")
 public class SignInRouteController extends BaseRouteController {
 	// TODO: Route for initial page load
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView serveSignInPage(
-		@RequestParam final Map<String, String> queryParameters,
-		HttpServletRequest request
-	) {
-		final Optional<ActiveUserEntity> activeUserEntity =
-			this.getCurrentUser(request);
+	public ModelAndView serveSignInPage(@RequestParam final Map<String, String> queryParameters,
+			HttpServletRequest request) {
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 		if (queryParameters.get("employeeId") != null) {
-			
+
 		}
 		if (activeUserEntity.isPresent()) {
-			return new ModelAndView(
-				REDIRECT_PREPEND.concat(
-					ViewNames.MAIN_MENU.getRoute()));
+			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 		} else if (employeeRepository.count() > 0) {
 			System.out.println(employeeRepository.count());
 			return new ModelAndView(ViewNames.SIGN_IN.getViewName());
 		} else {
-			return new ModelAndView(
-				REDIRECT_PREPEND.concat(
-					ViewNames.EMPLOYEE_DETAIL.getRoute()));
+			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.EMPLOYEE_DETAIL.getRoute()));
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST,
-	 consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ModelAndView performSignIn(
-		@RequestParam final Map<String, String> queryParameters,
-		EmployeeSignIn employeeSignIn,
-		HttpServletRequest request
-	) {
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ModelAndView performSignIn(@RequestParam final Map<String, String> queryParameters,
+			EmployeeSignIn employeeSignIn, HttpServletRequest request) {
 		final ModelAndView modelAndView;
 
-		if (!employeeIdExists(employeeSignIn.getEmployeeId()) ||
-			!passwordIsCorrect(employeeSignIn.getEmployeeId(),
-		 	employeeSignIn.getPassword())) {
+		if (!employeeIdExists(employeeSignIn.getEmployeeId())
+				|| !passwordIsCorrect(employeeSignIn.getEmployeeId(), employeeSignIn.getPassword())) {
 			modelAndView = new ModelAndView(ViewNames.SIGN_IN.getViewName());
-			modelAndView.addObject(
-				ViewModelNames.ERROR_MESSAGE.getValue(), 
-				"Invalid username / password combination.");
+			modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), "Invalid username / password combination.");
 			return modelAndView;
 		}
-		this.employeeSignInCommand.setEmployeeSignIn(employeeSignIn).
-			setRequest(request).execute();
-		return new ModelAndView(REDIRECT_PREPEND.concat(
-			ViewNames.MAIN_MENU.getRoute()));
+		this.employeeSignInCommand.setEmployeeSignIn(employeeSignIn).setRequest(request).execute();
+		return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 		// TODO: Use the credentials provided in the request body
-		//  and the "id" property of the (HttpServletRequest)request.getSession() variable
-		//  to sign in the user
+		// and the "id" property of the (HttpServletRequest)request.getSession()
+		// variable
+		// to sign in the user
 
 	}
-	
+
 	private boolean employeeIdExists(String employeeId) {
 		return employeeRepository.existsByEmployeeId(Integer.valueOf(employeeId));
-		
+
 	}
+
 	private boolean passwordIsCorrect(String employeeId, String password) {
-		EmployeeEntity employeeEntity = 
-			employeeRepository.findByEmployeeId(Integer.valueOf(employeeId)).get();
+		EmployeeEntity employeeEntity = employeeRepository.findByEmployeeId(Integer.valueOf(employeeId)).get();
 		System.out.println("input: " + password);
-		if (Arrays.equals(employeeEntity.getPassword(), new byte[0])) {
+		byte[] passwordEncoded = EmployeeHelper.hashPassword(password);
+		if (Arrays.equals(employeeEntity.getPassword(), passwordEncoded)) {
 			return true;
 		} else {
 			return false;

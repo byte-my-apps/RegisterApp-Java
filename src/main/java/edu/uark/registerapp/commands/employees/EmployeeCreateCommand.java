@@ -42,7 +42,6 @@ public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
 				.findByEmployeeId(Integer.valueOf(this.apiEmployee.getEmployeeId())); 
 
 		if (queriedEmployeeEntity.isPresent()) {
-			// Lookupcode already defined for another product.
 			throw new ConflictException("employeeId");
 		}
 
