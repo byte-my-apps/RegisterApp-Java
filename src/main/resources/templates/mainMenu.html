@@ -1,0 +1,98 @@
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>Register - Main Menu</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" type="text/css" href="/styles/master.css">
+
+	<script type="text/javascript" src="/scripts/master.js" defer></script>
+	<script type="text/javascript" src="/scripts/mainMenu.js" defer></script>
+</head>
+
+<body>
+
+	<div class="header">
+		<h1 class="primary-message">Main Menu</h1>
+	</div>
+		
+	<div id="main" class="main">
+		<div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
+			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
+		</div>
+
+		<!-- TODO: Add the various action button elements -->
+		<!-- Start Transaction button -->
+		<button id="transaction" type="button" class="action">Start Transaction</button>
+		<br />
+		<br />
+		<!-- View Products button -->
+		<button id="viewProducts" type="button" class="action">View Products</button>
+		<br />
+		<br />
+		<!-- Create Employee button, only visible to managers -->
+		<div id="createButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
+			<button id="createEmployee" type="button" class="action">Create Employee</button>
+		</div>
+		<br />
+		<br />
+		<!-- Sales Report button, only visible to managers -->
+		<div id="salesButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
+			<button id="salesReport" type="button" class="action">Sales Report</button>
+		</div>
+		<br />
+		<br />
+		<!-- Cashier Report button, only visible to managers -->
+		<div id="cashierButton" th:class="${#bools.isFalse(isElevatedUser)} ? hidden : ''">
+			<button id="cashierReport" type="button" class="action">Cashier Report</button>
+		</div>
+		<br />
+		<br />
+		<script>
+			document.getElementById("transaction").addEventListener("click", function(){
+				alert("Functionality has not yet been implemented");
+			});
+
+			// navigates to the product listings
+			document.getElementById("viewProducts").addEventListener("click", function(){
+				location.assign("/products");
+			});
+
+			// navigates to the employee details
+			document.getElementById("createEmployee").addEventListener("click", function(){
+				location.assign("/employeeDetail");
+			});
+
+			document.getElementById("salesReport").addEventListener("click", function(){
+				alert("Functionality has not yet been implemented");
+			});
+
+			document.getElementById("cashierReport").addEventListener("click", function(){
+				alert("Functionality has not yet been implemented");
+			});
+		</script>
+	</div>
+
+	<div class="hidden">
+		<input type="checkbox" id="isRefreshed" class="hidden">
+		<script type="text/javascript">
+			window.onunload = function() {
+				const isRefreshedElement = document.getElementById("isRefreshed");
+
+				if(!isRefreshedElement.checked) {
+					isRefreshedElement.checked = true;
+				} else {
+					isRefreshedElement.checked = false;
+					location.reload();
+				}
+			}
+		</script>
+	</div>
+
+	<div class="footer">
+		<img id="signOutImage" src="/images/Sign-Out.png" alt="Sign Out" class="footer" />
+	</div>
+		
+</body>
+
+</html>
